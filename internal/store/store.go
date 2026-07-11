@@ -38,3 +38,8 @@ type Store interface {
 type ErrNotFound struct{ What string }
 
 func (e ErrNotFound) Error() string { return e.What + " not found" }
+
+// ErrConflict is returned by CreateFlag when a flag with the same key already exists.
+type ErrConflict struct{ What string }
+
+func (e ErrConflict) Error() string { return e.What + " already exists" }
