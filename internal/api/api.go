@@ -120,7 +120,13 @@ func (a API) setConfig(w http.ResponseWriter, r *http.Request) {
 		writeStoreErr(w, err)
 		return
 	}
-	writeJSON(w, http.StatusOK, cfg)
+	// Return the persisted config (with the server-set updatedAt), not the request echo.
+	saved, err := a.Store.GetEnvConfig(r.Context(), f.ID, cfg.Env)
+	if err != nil {
+		writeStoreErr(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, saved)
 }
 
 func (a API) getConfig(w http.ResponseWriter, r *http.Request) {

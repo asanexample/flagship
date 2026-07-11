@@ -48,7 +48,7 @@
   display: grid;
   gap: var(--space-5);
   padding: var(--space-5);
-  max-width: 420px;
+  max-width: 640px;
   transition: opacity 0.15s ease;
 }
 .controls[data-dim] {
@@ -146,4 +146,34 @@
 .err {
   margin-left: auto;
   color: var(--danger);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.groupLabel {
+  font-size: var(--text-sm);
+  font-weight: var(--w-medium);
+  color: var(--text);
+}
+
+.saveRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.unsaved {
+  color: var(--partial);
+  font-weight: var(--w-medium);
+}
+
+.saveActions {
+  display: flex;
+  gap: var(--space-2);
 }
