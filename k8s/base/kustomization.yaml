@@ -1,6 +1,12 @@
 # Namespace- and host-agnostic base (ADR-067 platform-injection). The per-Product ApplicationSet sets the
 # destination namespace (platform-flagship-<stage>, Composition-created) and patches the real host onto the
 # HTTPRoute. Per-stage overlays carry the image digest + any stage deltas.
+#
+# The DATABASE lives in a PLATFORM namespace (db/, namespace platform-flagship-db), NOT this env namespace —
+# CNPG (an operator-managed, API-watching, operator-polled workload) does not fit the tenant sandbox
+# (Kyverno + default-deny-ingress netpol + WFC), whereas a plain platform namespace runs it cleanly like
+# every other platform DB. The app connects cross-namespace (allow-db-egress.yaml + the flagship-db-app
+# secret carrying the FQDN uri).
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -8,13 +14,4 @@ resources:
   - deployment.yaml
   - service.yaml
   - httproute.yaml
-  - postgres.yaml
-
-# The schema CNPG loads at DB init (ADR-099 D2). Stable name (no hash suffix) so postgres.yaml's
-# postInitApplicationSQLRefs can reference it; it runs once at init, so a content hash would be noise.
-configMapGenerator:
-  - name: flagship-db-schema
-    files:
-      - db-schema.sql
-generatorOptions:
-  disableNameSuffixHash: true
+  - allow-db-egress.yaml

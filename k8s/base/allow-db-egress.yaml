@@ -1,0 +1,21 @@
+# Cross-namespace egress: the flagship-server app (this env namespace) → its database (platform-flagship-db).
+# The environment netpol default-denies egress except a 0.0.0.0/0 CIDR block, but on Cilium (BYOCNI)
+# in-cluster pod-to-pod is IDENTITY-matched, not CIDR-matched — so the DB (a different namespace's pods) is
+# NOT reachable via that CIDR rule. This CNP allows the specific east-west path on 5432. Namespace-agnostic:
+# the per-Product ApplicationSet injects the destination namespace.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-flagship-db-egress
+spec:
+  endpointSelector:
+    matchLabels:
+      app: flagship-server
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: platform-flagship-db
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
