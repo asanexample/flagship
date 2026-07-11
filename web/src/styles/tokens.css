@@ -1,0 +1,103 @@
+/* Flagship design tokens — a precise control-console system. Light is the default; JS stamps
+   [data-theme="dark"|"light"] on <html> (system preference + a manual toggle), so themes never duplicate. */
+:root {
+  color-scheme: light dark;
+
+  /* Type — a clean grotesk for UI, mono for identifiers (flag keys, variant values, IDs are code). */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, monospace;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem; /* dashboards read best at ~14px */
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --leading-tight: 1.25;
+  --leading: 1.5;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.12em;
+
+  --w-normal: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+
+  /* Space — 4px base */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  --space-10: 64px;
+
+  --radius-sm: 5px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  /* ---- Light theme ---- */
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f1f3f6;
+  --surface-hover: #f5f7fa;
+  --border: #e4e7ec;
+  --border-strong: #d0d5dd;
+  --text: #182230;
+  --text-muted: #667085;
+  --text-faint: #98a2b3;
+
+  --accent: #0e7c86; /* deep-sea teal — the Flagship signal */
+  --accent-hover: #0a666f;
+  --accent-fg: #ffffff;
+  --accent-soft: #e1f2f3;
+
+  --on: #067647; /* enabled */
+  --on-soft: #e5f5ec;
+  --off: #667085; /* disabled */
+  --off-soft: #eceff3;
+  --partial: #b54708; /* percentage rollout */
+  --partial-soft: #fbeee2;
+  --danger: #b42318;
+  --danger-soft: #fceceb;
+  --danger-hover: #99190f;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow: 0 6px 16px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.16);
+  --ring: 0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent);
+  --ring-danger: 0 0 0 3px color-mix(in srgb, var(--danger) 30%, transparent);
+}
+
+:root[data-theme="dark"] {
+  --bg: #0b0f14;
+  --surface: #141a21;
+  --surface-2: #1a222b;
+  --surface-hover: #1e2731;
+  --border: #262f3b;
+  --border-strong: #35404e;
+  --text: #e6eaf0;
+  --text-muted: #94a0b0;
+  --text-faint: #616d7c;
+
+  --accent: #2dd4bf;
+  --accent-hover: #5eead4;
+  --accent-fg: #052623;
+  --accent-soft: #103430;
+
+  --on: #3ecf8e;
+  --on-soft: #12291f;
+  --off: #7a8798;
+  --off-soft: #1b232d;
+  --partial: #f5a15a;
+  --partial-soft: #2a2015;
+  --danger: #f97066;
+  --danger-soft: #2c1816;
+  --danger-hover: #ff8a80;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+}

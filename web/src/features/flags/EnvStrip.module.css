@@ -1,0 +1,72 @@
+.strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: var(--space-2);
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  min-width: 64px;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition:
+    border-color 0.12s ease,
+    background 0.12s ease,
+    transform 0.12s ease;
+}
+
+.cell:not(:disabled):hover {
+  border-color: var(--border-strong);
+}
+
+.cell[data-selected] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.cell[data-prod] .stage {
+  color: var(--text);
+  font-weight: var(--w-semibold);
+}
+
+.stage {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-faint);
+}
+
+.value {
+  font-size: var(--text-sm);
+  font-weight: var(--w-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+/* State-driven accent on the value + a left status tick via the border. */
+.cell[data-state="on"] {
+  background: color-mix(in srgb, var(--on-soft) 55%, var(--surface));
+}
+.cell[data-state="on"] .value {
+  color: var(--on);
+}
+.cell[data-state="off"] .value {
+  color: var(--text-muted);
+}
+.cell[data-state="partial"] {
+  background: color-mix(in srgb, var(--partial-soft) 55%, var(--surface));
+}
+.cell[data-state="partial"] .value {
+  color: var(--partial);
+}
+.cell[data-state="targeted"] .value {
+  color: var(--accent);
+}
+.cell[data-state="none"] .value {
+  color: var(--text-faint);
+}
