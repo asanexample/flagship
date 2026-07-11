@@ -22,6 +22,10 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
+        # distroless nonroot runs as the *named* user "nonroot"; the kubelet can't verify a name as
+        # non-root under runAsNonRoot, so pin the known numeric UID/GID (distroless nonroot = 65532).
+        runAsUser: 65532
+        runAsGroup: 65532
         seccompProfile:
           type: RuntimeDefault
       containers:
