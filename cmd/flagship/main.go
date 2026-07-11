@@ -23,7 +23,21 @@ func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(logger)
 
-	st := store.NewMemory() // TODO(phase1): swap for the Postgres store.
+	// Postgres (CNPG) when DATABASE_URL is set; in-memory otherwise (local dev / tests).
+	var st store.Store
+	if dsn := os.Getenv("DATABASE_URL"); dsn != "" {
+		pg, err := store.NewPostgres(context.Background(), dsn)
+		if err != nil {
+			logger.Error("postgres connect failed", "err", err)
+			os.Exit(1)
+		}
+		defer pg.Close()
+		st = pg
+		logger.Info("store: postgres")
+	} else {
+		st = store.NewMemory()
+		logger.Info("store: in-memory (set DATABASE_URL for postgres)")
+	}
 
 	mux := http.NewServeMux()
 	api.API{Store: st}.Register(mux)         // control-plane management (write side)
