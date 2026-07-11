@@ -1,3 +1,6 @@
 .git
 bin/
-*.md
+**/*.md
+web/node_modules/
+web/dist/
+web/.shots/

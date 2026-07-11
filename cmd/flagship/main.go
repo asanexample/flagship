@@ -17,6 +17,7 @@ import (
 	"github.com/asanexample/flagship/internal/api"
 	"github.com/asanexample/flagship/internal/store"
 	"github.com/asanexample/flagship/internal/syncsource"
+	"github.com/asanexample/flagship/web"
 )
 
 func main() {
@@ -46,6 +47,14 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(`{"status":"ok"}`))
 	})
+	// The dashboard SPA (embedded under -tags dashboard). "/" is the catch-all; the API/sync/healthz
+	// patterns above are more specific, so they win. Absent (plain build) → API + sync only.
+	if h := web.Handler(); h != nil {
+		mux.Handle("/", h)
+		logger.Info("dashboard: embedded")
+	} else {
+		logger.Info("dashboard: not embedded (build with -tags dashboard)")
+	}
 
 	addr := getenv("ADDR", ":8080")
 	srv := &http.Server{Addr: addr, Handler: mux, ReadTimeout: 10 * time.Second, WriteTimeout: 10 * time.Second}
