@@ -1,0 +1,10 @@
+# Namespace- and host-agnostic base (ADR-067 platform-injection). The per-Product ApplicationSet sets the
+# destination namespace (platform-flagship-<stage>, Composition-created) and patches the real host onto the
+# HTTPRoute. Per-stage overlays carry the image digest + any stage deltas.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - serviceaccount.yaml
+  - deployment.yaml
+  - service.yaml
+  - httproute.yaml

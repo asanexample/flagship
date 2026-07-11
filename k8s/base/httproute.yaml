@@ -1,0 +1,22 @@
+# Exposes Flagship's management API + dashboard via the internal gateway. The platform injects the real host
+# (ADR-067 platform-injection: the per-Product ApplicationSet patches /spec/hostnames/0 to
+# flagship-platform-<stage>.<baseDomain>). `.invalid` fails safe if the patch ever doesn't apply.
+#
+# NOTE: the flagd SYNC path (consumers' flagd sidecars) does NOT go through this route — consumers reach the
+# sync endpoint in-cluster via the Service DNS (flagship-server.platform-flagship-<stage>.svc). This route is
+# for humans hitting the API/dashboard.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: flagship-server
+spec:
+  parentRefs:
+    - name: preprod-gateway
+      namespace: default
+      sectionName: https
+  hostnames:
+    - placeholder.invalid
+  rules:
+    - backendRefs:
+        - name: flagship-server
+          port: 80
