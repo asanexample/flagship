@@ -1,0 +1,19 @@
+# Flagship's DATABASE (ADR-099 D2) — a CNPG Postgres in a PLATFORM namespace (platform-flagship-db),
+# separate from the app's environment namespace. Version-controlled here; delivery is a dedicated ArgoCD
+# Application (platform databases), NOT the per-Product ApplicationSet that ships the app bundle to the
+# environment namespace. See db/README notes and the app's k8s/base/kustomization.yaml.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - cluster.yaml
+
+# Schema loaded once at DB init (SET ROLE flagship so the app user owns the tables). Stable name so
+# cluster.yaml's postInitApplicationSQLRefs can reference it.
+configMapGenerator:
+  - name: flagship-db-schema
+    namespace: platform-flagship-db
+    files:
+      - db-schema.sql
+generatorOptions:
+  disableNameSuffixHash: true
